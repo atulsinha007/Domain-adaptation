@@ -1,0 +1,101 @@
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=3, tm_hour=19, tm_min=41, tm_sec=2, tm_wday=1, tm_yday=93, tm_isdst=0)
+Traceback (most recent call last):
+  File "main1.py", line 316, in <module>
+    test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1)
+  File "main1.py", line 281, in test_it_with_bp
+    pop, stats = main( play = play, NGEN = NGEN, MU = MU)
+  File "main1.py", line 101, in main
+    for ind, fit in zip(invalid_ind, fitnesses):
+  File "main1.py", line 33, in minimize_src
+    outputarr = network_obj_src.feedforward_ne(individual, final_activation=network.softmax)
+NameError: name 'network' is not defined
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=3, tm_hour=19, tm_min=42, tm_sec=34, tm_wday=1, tm_yday=93, tm_isdst=0)
+Traceback (most recent call last):
+  File "main1.py", line 317, in <module>
+    test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1)
+  File "main1.py", line 282, in test_it_with_bp
+    pop, stats = main( play = play, NGEN = NGEN, MU = MU)
+  File "main1.py", line 102, in main
+    for ind, fit in zip(invalid_ind, fitnesses):
+  File "main1.py", line 36, in minimize_src
+    neg_log_likelihood_val = give_neg_log_likelihood(outputarr, network_obj_src.resty)
+NameError: name 'give_neg_log_likelihood' is not defined
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=4, tm_hour=22, tm_min=47, tm_sec=40, tm_wday=2, tm_yday=94, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    post_st = sys.argv[1]
+NameError: name 'sys' is not defined
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=4, tm_hour=22, tm_min=48, tm_sec=48, tm_wday=2, tm_yday=94, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    post_st = sys.argv[1]
+NameError: name 'sys' is not defined
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=4, tm_hour=22, tm_min=49, tm_sec=20, tm_wday=2, tm_yday=94, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    post_st = sys.argv[1]
+NameError: name 'sys' is not defined
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=5, tm_hour=3, tm_min=24, tm_sec=27, tm_wday=3, tm_yday=95, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    post_st = sys.argv[1]
+NameError: name 'sys' is not defined
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=5, tm_hour=3, tm_min=26, tm_sec=8, tm_wday=3, tm_yday=95, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    post_st = sys.argv[1]
+NameError: name 'sys' is not defined
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=5, tm_hour=4, tm_min=2, tm_sec=22, tm_wday=3, tm_yday=95, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 315, in <module>
+    test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
+  File "main.py", line 281, in test_it_with_bp
+    pop, stats = main(play=play, NGEN=NGEN, MU=MU)
+  File "main.py", line 203, in main
+    toolbox.register("mutate", mymutate_tar)
+NameError: name 'mymutate_tar' is not defined
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=5, tm_hour=13, tm_min=10, tm_sec=5, tm_wday=3, tm_yday=95, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 315, in <module>
+    test_it_with_bp(play=1, NGEN=60, MU=4 * 15, play_with_whole_pareto=1, post_st = post_st)
+  File "main.py", line 281, in test_it_with_bp
+    pop, stats = main(play=play, NGEN=NGEN, MU=MU)
+  File "main.py", line 203, in main
+    toolbox.register("mutate", mymutate_tar)
+NameError: name 'mymutate_tar' is not defined
+
+

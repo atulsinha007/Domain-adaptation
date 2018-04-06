@@ -308,7 +308,7 @@ def test_it_with_bp(play=1, NGEN=60, MU=4 * 15, play_with_whole_pareto=0, post_s
 
 
 if __name__ == "__main__":
-	logf = open("log_folder/log_error_main.txt", "a")
+	logf = open("log_error_main.txt", "a")
 	try:
 		post_st = sys.argv[1]
 		test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)

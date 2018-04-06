@@ -1,0 +1,67 @@
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=5, tm_hour=13, tm_min=48, tm_sec=21, tm_wday=3, tm_yday=95, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
+  File "main.py", line 301, in test_it_with_bp
+    network_obj_tar.test_err(min(pop, key=lambda x: x.fitness.values[1])))
+NameError: name 'network_obj_tar' is not defined
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=5, tm_hour=14, tm_min=35, tm_sec=3, tm_wday=3, tm_yday=95, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
+  File "main.py", line 301, in test_it_with_bp
+    network_obj_tar.test_err(min(pop, key=lambda x: x.fitness.values[1])))
+NameError: name 'network_obj_tar' is not defined
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=5, tm_hour=14, tm_min=36, tm_sec=13, tm_wday=3, tm_yday=95, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
+  File "main.py", line 301, in test_it_with_bp
+    network_obj_tar.test_err(min(pop, key=lambda x: x.fitness.values[1])))
+NameError: name 'network_obj_tar' is not defined
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=5, tm_hour=22, tm_min=32, tm_sec=24, tm_wday=3, tm_yday=95, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
+  File "main.py", line 280, in test_it_with_bp
+    pop, stats = main(play=play, NGEN=NGEN, MU=MU)
+  File "main.py", line 102, in main
+    for ind, fit in zip(invalid_ind, fitnesses):
+  File "main.py", line 36, in minimize_src
+    outputarr = network_obj_src.feedforward_ne(individual, final_activation=network.softmax)
+  File "/home/placements2018/Desktop/neuro-evolution/network.py", line 209, in feedforward_ne
+    storage[tup[1].node_num] += storage[tup[0].node_num]*weight
+IndexError: index 325 is out of bounds for axis 0 with size 174
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=5, tm_hour=22, tm_min=33, tm_sec=53, tm_wday=3, tm_yday=95, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
+  File "main.py", line 280, in test_it_with_bp
+    pop, stats = main(play=play, NGEN=NGEN, MU=MU)
+  File "main.py", line 102, in main
+    for ind, fit in zip(invalid_ind, fitnesses):
+  File "main.py", line 36, in minimize_src
+    outputarr = network_obj_src.feedforward_ne(individual, final_activation=network.softmax)
+  File "/home/placements2018/Desktop/neuro-evolution/network.py", line 209, in feedforward_ne
+    storage[tup[1].node_num] += storage[tup[0].node_num]*weight
+IndexError: index 325 is out of bounds for axis 0 with size 174
+
+
