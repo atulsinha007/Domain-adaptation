@@ -16,13 +16,13 @@ import network
 from network import Neterr
 from chromosome import Chromosome, crossover
 import traceback
-
-n_hidden = 100
-indim = 32
+import sys
+n_hidden = 40
+indim = 64
 outdim = 5
 #
 
-network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target=100, rng=random)
+network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target=164, rng=random)
 
 # creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))
 
@@ -51,7 +51,7 @@ def mycross(ind1, ind2, gen_no):
 
 def mymutate_src(ind1):
 	# do_mutation(self, rate_conn_weight, rate_conn_itself, rate_node, inputdim, outputdim, max_hidden_unit, rng)
-	new_ind = ind1.do_mutation(rate_conn_weight=0.3, rate_conn_itself=0.2, rate_node=0.1, weight_factor=1,
+	new_ind = ind1.do_mutation(rate_conn_weight=0.4, rate_conn_itself=0.3, rate_node=0.2, weight_factor=2,
 							   inputdim=indim, outputdim=outdim, max_hidden_unit=n_hidden, rng=random)
 	return ind1
 
@@ -200,7 +200,6 @@ def main(seed=None, play=0, NGEN=40, MU=4 * 10):
 	print(' ------------------------------------src done------------------------------------------- ')
 	fronts = tools.sortNondominated(pop_src, len(pop_src))
 
-	toolbox.register("mutate", mymutate_tar)
 	pareto_front = fronts[0]
 	print(pareto_front)
 	print("Pareto Front: ")
@@ -277,9 +276,9 @@ def test_it_without_bp():
 	print(note_this_string(st, stringh))
 
 
-def test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=0):
+def test_it_with_bp(play=1, NGEN=60, MU=4 * 15, play_with_whole_pareto=0, post_st = ''):
 	pop, stats = main(play=play, NGEN=NGEN, MU=MU)
-	stringh = "_with_bp_approach2" + str(play) + "_" + str(NGEN)
+	stringh = "_with_bp" + str(play) + "_" + str(NGEN)+post_st
 	fronts = tools.sortNondominated(pop, len(pop))
 
 	'''file_ob = open("./log_folder/log_for_graph.txt", "w+")
@@ -299,19 +298,20 @@ def test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=0):
 		print(pareto_front[i].fitness.values)
 
 	print("\ntest: test on one with min validation error",
-		  network_obj_tar.test_err(min(pop, key=lambda x: x.fitness.values[1])))
-	tup = network_obj_tar.test_on_pareto_patch_correctone(pareto_front)
+		  network_obj_src.test_err(min(pop, key=lambda x: x.fitness.values[1])))
+	tup = network_obj_src.test_on_pareto_patch_correctone(pareto_front)
 
 	print("\n test: avg on sampled pareto set", tup)
 
-	st = str(network_obj_tar.test_err(min(pop, key=lambda x: x.fitness.values[1]))) + " " + str(tup)
+	st = str(network_obj_src.test_err(min(pop, key=lambda x: x.fitness.values[1]))) + " " + str(tup)
 	print(note_this_string(st, stringh))
 
 
 if __name__ == "__main__":
-	logf = open("log_error_tl.txt", "a")
+	logf = open("log_folder/log_error_main.txt", "a")
 	try:
-		test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1)
+		post_st = sys.argv[1]
+		test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
 	except Exception as e:
 		print("Error! Error! Error!")
 		logf.write('\n\n')

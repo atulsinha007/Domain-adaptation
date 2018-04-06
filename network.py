@@ -43,7 +43,10 @@ class Neterr:
         if not change_to_target:
             rest_set, test_set = dataset2_dataf.give_source_data()  # a two tuple of ( two tuple of array)
         elif change_to_target == 1:
-            rest_set, test_set = dataset2_dataf.give_target_data()
+            with open("./pickle_jar/tar_tup.pickle", "rb") as fp:
+                tup = pickle.load(fp)
+
+            rest_set, test_set = tup
         elif change_to_target == 2:
             rest_set, test_set = dataset2_dataf.give_target_data_just_src_just_tar()
         elif change_to_target == 100:
@@ -57,7 +60,45 @@ class Neterr:
             with open("./pickle_jar/dublue.pickle", "rb") as fp:
                 W_mat = pickle.load(fp)
 
+
             rest_set = np.concatenate((rest_set[0], np.transpose(np.dot(W_mat, np.transpose(trest_set[0]))))), np.concatenate((rest_set[1], trest_set[1]))
+
+            #print("here ", rest_set[0].shape, rest_set[1].shape)
+            test_set = (np.transpose( np.dot(W_mat, np.transpose(ttest_set[0]))), ttest_set[1])
+            #print("here ", test_set[0].shape, test_set[1].shape)
+        elif change_to_target == 164:
+
+            with open("./pickle_jar/64src_tup.pickle", "rb") as fp:
+                rest_set, _ = pickle.load(fp)
+                #print(rest_set[0].shape, rest_set[1].shape)
+            with open("./pickle_jar/64tar_tup.pickle", "rb") as fp:
+                trest_set, ttest_set = pickle.load(fp)
+                #print(trest_set[0].shape, trest_set[1].shape, ttest_set[0].shape, ttest_set[1].shape)
+            with open("./pickle_jar/dublue_bovw_64.pickle", "rb") as fp:
+                W_mat = pickle.load(fp)
+                
+
+            rest_set = np.concatenate((rest_set[0], np.transpose(np.dot(W_mat, np.transpose(trest_set[0]))))), np.concatenate((rest_set[1], trest_set[1]))
+
+            #print("here ", rest_set[0].shape, rest_set[1].shape)
+            test_set = (np.transpose( np.dot(W_mat, np.transpose(ttest_set[0]))), ttest_set[1])
+            #print("here ", test_set[0].shape, test_set[1].shape)
+        elif change_to_target == 228:
+
+            with open("./pickle_jar/128src_tup.pickle", "rb") as fp:
+                rest_set, _ = pickle.load(fp)
+                #print(rest_set[0].shape, rest_set[1].shape)
+            with open("./pickle_jar/128tar_tup.pickle", "rb") as fp:
+                trest_set, ttest_set = pickle.load(fp)
+                #print(trest_set[0].shape, trest_set[1].shape, ttest_set[0].shape, ttest_set[1].shape)
+            with open("./pickle_jar/dublue_bovw_128.pickle", "rb") as fp:
+                W_mat = pickle.load(fp)
+                
+
+            rest_set = np.concatenate((rest_set[0], np.transpose(np.dot(W_mat, np.transpose(trest_set[0]))))), np.concatenate((rest_set[1], trest_set[1]))
+
+
+
 
             #print("here ", rest_set[0].shape, rest_set[1].shape)
             test_set = (np.transpose( np.dot(W_mat, np.transpose(ttest_set[0]))), ttest_set[1])
@@ -78,8 +119,43 @@ class Neterr:
                                      dtype=tf.float32)
         self.test_sety = tf.Variable(initial_value = self.testy, name='test_sety', dtype=tf.int32)
         #self.inputarr = inputarr
+        self.inputarr = self.restx       
+        # FOR ANY CHANGE IN DATASET, CHANGE DIMENSION NO. MENTIONED IN THESE THREE FILES - cluster.py, chromosome.py and main_just_tar.py
+        self.restx = rest_set[0]
+        resty = rest_set[1]
+        self.testx = test_set[0]
+        testy = test_set[1]
+        #print("one time", resty.shape, testy.shape, self.restx.shape)
+
+        self.resty = np.ravel(resty)
+        self.testy = np.ravel(testy)
+        self.rest_setx = tf.Variable(initial_value = self.restx, name='rest_setx',
+                                     dtype=tf.float32)
+        self.rest_sety = tf.Variable(initial_value = self.resty, name='rest_sety', dtype=tf.int32)
+        self.test_setx = tf.Variable(initial_value = self.testx, name='rest_sety',
+                                     dtype=tf.float32)
+        self.test_sety = tf.Variable(initial_value = self.testy, name='test_sety', dtype=tf.int32)
+        #self.inputarr = inputarr
+        self.inputarr = self.restx
+        # FOR ANY CHANGE IN DATASET, CHANGE DIMENSION NO. MENTIONED IN THESE THREE FILES - cluster.py, chromosome.py and main_just_tar.py
+        self.restx = rest_set[0]
+        resty = rest_set[1]
+        self.testx = test_set[0]
+        testy = test_set[1]
+        #print("one time", resty.shape, testy.shape, self.restx.shape)
+
+        self.resty = np.ravel(resty)
+        self.testy = np.ravel(testy)
+        self.rest_setx = tf.Variable(initial_value = self.restx, name='rest_setx',
+                                     dtype=tf.float32)
+        self.rest_sety = tf.Variable(initial_value = self.resty, name='rest_sety', dtype=tf.int32)
+        self.test_setx = tf.Variable(initial_value = self.testx, name='rest_sety',
+                                     dtype=tf.float32)
+        self.test_sety = tf.Variable(initial_value = self.testy, name='test_sety', dtype=tf.int32)
+        #self.inputarr = inputarr
         self.inputarr = self.restx
         #print("shape here",self.restx.shape)
+    
 
     def feedforward_cm(self, chromo, middle_activation = relu, final_activation = sigmoid,play = 0):
 

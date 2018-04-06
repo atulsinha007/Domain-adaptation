@@ -15,7 +15,7 @@ from population import *
 from network import Neterr
 from chromosome import Chromosome, crossover
 import traceback
-
+import sys
 n_hidden = 100
 indim = 32
 outdim = 5
@@ -420,9 +420,9 @@ def test_it_without_bp():
 	print(note_this_string(st, stringh))
 
 
-def test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=0):
+def test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=0, post_st = ''):
 	pop, stats = main(play=play, NGEN=NGEN, MU=MU)
-	stringh = "_with_bp_approach2" + str(play) + "_" + str(NGEN)
+	stringh = "_with_bp" + str(play) + "_" + str(NGEN)+post_st
 	fronts = tools.sortNondominated(pop, len(pop))
 
 	'''file_ob = open("./log_folder/log_for_graph.txt", "w+")
@@ -452,9 +452,10 @@ def test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=0):
 
 
 if __name__ == "__main__":
-	logf = open("log_error_tl.txt", "a")
+	logf = open("log_error.txt", "a")
 	try:
-		test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1)
+		post_st = sys.argv[1]
+		test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
 	except Exception as e:
 		print("Error! Error! Error!")
 		logf.write('\n\n')
