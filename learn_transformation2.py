@@ -27,8 +27,8 @@ import pickle
 import copy
 import sys
 import time
-NGEN = 10
-pop_size = 2
+NGEN = 100
+pop_size = 200
 cxpb = .8
 m_fac = .2
 m_prob = .2
