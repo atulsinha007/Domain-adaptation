@@ -19,7 +19,7 @@
 
 import random
 import numpy as np
-
+import scipy
 from deap import base
 from deap import creator
 from deap import tools
@@ -116,6 +116,12 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 def dist(transformed_target, source_instance):
     return np.sqrt(np.sum((transformed_target - source_instance)**2))
 
+def mahanalobis_dist(transformed_target, source_instance):
+    cov_matrix = np.cov(transformed_target, source_instance)
+    cov_matrix_inv = np.linalg.inv(cov_matrix)
+    return scipy.spatial.distance.mahalanobis(transformed_target, source_instance, cov_matrix_inv)
+
+
 
 def closeness_cost(ind):
     sumi = 0
@@ -141,7 +147,7 @@ def closeness_cost(ind):
             # print(transformed_target, source_instance)
             #print(source_instance)
             if source_lab == target_lab:
-                min_dist = min(min_dist, dist(transformed_target, source_instance))
+                min_dist = min(min_dist, mahanalobis_dist(transformed_target, source_instance))
             #print(min_dist)
         sumi += min_dist
 
