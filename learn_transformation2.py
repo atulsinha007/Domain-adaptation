@@ -27,8 +27,8 @@ import pickle
 import copy
 import sys
 import time
-NGEN = 1000
-pop_size = 200
+NGEN = 10
+pop_size = 2
 cxpb = .8
 m_fac = .2
 m_prob = .2
@@ -86,7 +86,7 @@ pickle.dump(tup_s, fs)
 fs.close()
 source_dim = source_rest_arr.shape[1]
 
-creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0))
+creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
 class MatChromo:
     def __init__(self, source_dim, target_dim, arr=None, rng = np.random):
         self.array = rng.random((source_dim, target_dim))
@@ -147,7 +147,7 @@ def closeness_cost(ind):
 
     # sumi += np.sum(abs(W - np.identity(W.shape[0], 'float32')))
     # print( sumi )
-    return (sumi, np.sum(abs(W - np.identity(W.shape[0], 'float32'))))
+    return (sumi, )
 
 #----------
 # Operator registration
@@ -188,7 +188,7 @@ toolbox.register("mutate", myMutate, rng = np.random)
 # generation: each individual of the current generation
 # is replaced by the 'fittest' (best) of three individuals
 # drawn randomly from the current generation.
-toolbox.register("select", tools.selNSGA2)
+toolbox.register("select", tools.selRoulette)
 #toolbox.register("select", tools.selRoulette)
 #----------
 
