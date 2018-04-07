@@ -19,7 +19,7 @@
 
 import random
 import numpy as np
-import scipy
+import scipy.spatial.distance 
 from deap import base
 from deap import creator
 from deap import tools
@@ -113,13 +113,36 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 # the goal ('fitness') function to be maximized
 
-def dist(transformed_target, source_instance):
+def euclidean_dist(transformed_target, source_instance):
     return np.sqrt(np.sum((transformed_target - source_instance)**2))
 
 def mahanalobis_dist(transformed_target, source_instance):
+    # print(transformed_target.shape, source_instance.shape)
+    # transformed_target = transformed_target.reshape((transformed_target.shape[0], 1))
+    # source_instance = source_instance.reshape((source_instance.shape[0], 1))
+    # print(transformed_target)
+    # print(np.cov(transformed_target), np.cov(source_instance))
+    # print(transformed_target.shape, source_instance.shape)
     cov_matrix = np.cov(transformed_target, source_instance)
     cov_matrix_inv = np.linalg.inv(cov_matrix)
-    return scipy.spatial.distance.mahalanobis(transformed_target, source_instance, cov_matrix_inv)
+    # print(cov_matrix_inv)
+
+
+    X = np.vstack([transformed_target, source_instance])
+    V = np.cov(X.T)
+    VI = np.linalg.inv(V)
+    # print (np.diag(np.sqrt(np.dot(np.dot((transformed_target - source_instance),VI),(transformed_target - source_instance).T))))
+
+
+    mahanalobis_distance = scipy.spatial.distance.mahalanobis(transformed_target, source_instance, VI)
+    print(mahanalobis_distance)
+    # diff = transformed_target - source_instance
+    # print(diff.shape, cov_matrix_inv.shape)
+    # print(np.dot(diff, cov_matrix_inv))
+    # mahanalobis_distance = np.dot(np.dot(diff, cov_matrix_inv), diff.T)
+    # print(mahanalobis_distance)
+    # return mahanalobis_distance
+    return scipy.spatial.distance.mahalanobis(transformed_target, source_instance, VI)
 
 
 
@@ -147,7 +170,7 @@ def closeness_cost(ind):
             # print(transformed_target, source_instance)
             #print(source_instance)
             if source_lab == target_lab:
-                min_dist = min(min_dist, mahanalobis_dist(transformed_target, source_instance))
+                min_dist = min(min_dist, euclidean_dist(transformed_target, source_instance))
             #print(min_dist)
         sumi += min_dist
 
