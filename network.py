@@ -12,6 +12,8 @@ import copy
 
 import dataset3_dataf
 import pickle
+
+
 def sigmoid(arr):
     return 1 / (1 + np.exp(-arr))
 def relu(arr):
@@ -106,8 +108,28 @@ class Neterr:
         elif change_to_target == 500:
             tup = dataset2_dataf.give_source_data(), dataset2_dataf.give_target_data()
             test_set = tup[1][1]
-            restx_candidate = 
+            #restx_candidate =
+            #self.restx = rest_set[0]
+            #resty = rest_set[1]
+            self.testx = test_set[0]
+            testy = test_set[1]
+            # print("one time", resty.shape, testy.shape, self.restx.shape)
 
+            #self.resty = np.ravel(resty)
+            self.testy = np.ravel(testy)
+            #self.rest_setx = tf.Variable(initial_value=self.restx, name='rest_setx',
+                                         dtype=tf.float32)
+            #self.rest_sety = tf.Variable(initial_value=self.resty, name='rest_sety', dtype=tf.int32)
+            self.test_setx = tf.Variable(initial_value=self.testx, name='rest_sety',
+                                         dtype=tf.float32)
+            self.test_sety = tf.Variable(initial_value=self.testy, name='test_sety', dtype=tf.int32)
+            # self.inputarr = inputarr
+            # FOR ANY CHANGE IN DATASET, CHANGE DIMENSION NO. MENTIONED IN THESE THREE FILES - cluster.py, chromosome.py and main_just_tar.py
+            self.full_source_set    = tup[0][0] # still a tuple of two-d array and a one-d array
+            self.seventyfive_target_set    = tup[1][0]# same as above
+
+            return
+            # print("shape here",self.restx.shape)
         # FOR ANY CHANGE IN DATASET, CHANGE DIMENSION NO. MENTIONED IN THESE THREE FILES - cluster.py, chromosome.py and main_just_tar.py
 
         self.restx = rest_set[0]
@@ -127,40 +149,7 @@ class Neterr:
         #self.inputarr = inputarr
         self.inputarr = self.restx       
         # FOR ANY CHANGE IN DATASET, CHANGE DIMENSION NO. MENTIONED IN THESE THREE FILES - cluster.py, chromosome.py and main_just_tar.py
-        self.restx = rest_set[0]
-        resty = rest_set[1]
-        self.testx = test_set[0]
-        testy = test_set[1]
-        #print("one time", resty.shape, testy.shape, self.restx.shape)
 
-        self.resty = np.ravel(resty)
-        self.testy = np.ravel(testy)
-        self.rest_setx = tf.Variable(initial_value = self.restx, name='rest_setx',
-                                     dtype=tf.float32)
-        self.rest_sety = tf.Variable(initial_value = self.resty, name='rest_sety', dtype=tf.int32)
-        self.test_setx = tf.Variable(initial_value = self.testx, name='rest_sety',
-                                     dtype=tf.float32)
-        self.test_sety = tf.Variable(initial_value = self.testy, name='test_sety', dtype=tf.int32)
-        #self.inputarr = inputarr
-        self.inputarr = self.restx
-        # FOR ANY CHANGE IN DATASET, CHANGE DIMENSION NO. MENTIONED IN THESE THREE FILES - cluster.py, chromosome.py and main_just_tar.py
-        self.restx = rest_set[0]
-        resty = rest_set[1]
-        self.testx = test_set[0]
-        testy = test_set[1]
-        #print("one time", resty.shape, testy.shape, self.restx.shape)
-
-        self.resty = np.ravel(resty)
-        self.testy = np.ravel(testy)
-        self.rest_setx = tf.Variable(initial_value = self.restx, name='rest_setx',
-                                     dtype=tf.float32)
-        self.rest_sety = tf.Variable(initial_value = self.resty, name='rest_sety', dtype=tf.int32)
-        self.test_setx = tf.Variable(initial_value = self.testx, name='rest_sety',
-                                     dtype=tf.float32)
-        self.test_sety = tf.Variable(initial_value = self.testy, name='test_sety', dtype=tf.int32)
-        #self.inputarr = inputarr
-        self.inputarr = self.restx
-        #print("shape here",self.restx.shape)
     
 
     def feedforward_cm(self, chromo, middle_activation = relu, final_activation = sigmoid,play = 0):

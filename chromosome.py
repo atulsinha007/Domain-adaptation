@@ -8,11 +8,12 @@ import numpy as np
 import tensorflow as tf
 import deep_net
 import time
-
+import matchromo
 inputnumber = 32
 outputnumber = 5  # here could be an error, after all that's why I don't use global variables
 innov_ctr = inputnumber * outputnumber + 1
-
+source_feature_size = 32
+target_feature_size = 32
 
 # import network
 
@@ -48,6 +49,9 @@ class Chromosome:
             self.bias_conn_arr = []
             self.bias_conn_arr = [gene.BiasConn(outputt, random.random() / 1000) for outputt in lisO]
             self.dob = 0
+            global source_feature_size, target_feature_size
+            self.trans_mat = matchromo.MatChromo(source_feature_size, target_feature_size)
+
 
         else:
             self.node_ctr = old_chromosome.node_ctr
@@ -55,6 +59,7 @@ class Chromosome:
             self.bias_conn_arr = old_chromosome.bias_conn_arr
             self.node_arr = old_chromosome.node_arr
             self.dob = old_chromosome.dob
+            self.trans_mat = old_chromosome.trans_mat
 
 
 
@@ -340,7 +345,7 @@ class Chromosome:
         self.conn_arr.append(new_conn1)
         self.conn_arr.append(new_conn2)
 
-    def do_mutation(self, rate_conn_weight, rate_conn_itself, rate_node, weight_factor , inputdim, outputdim, max_hidden_unit, rng):
+    def do_mutation(self, rate_conn_weight, rate_conn_itself, rate_node, rate_trans_mat, factor_trans_mat, weight_factor , inputdim, outputdim, max_hidden_unit, rng):
         # rate_conn_weight > rate_conn_itself >> rate_node
         # 0.2, 0.1, 0.05
         p = len(self.conn_arr)
@@ -358,6 +363,8 @@ class Chromosome:
         elif prnd < rate_conn_weight:
             self.weight_mutation(rng, weight_factor)
             flag = 1
+
+        self.trans_mat.Mutate(rate_trans_mat, factor_trans_mat)
         """if flag:
             print("before mutation length", p)
             print("after mutation length", len(self.conn_arr))
@@ -611,18 +618,9 @@ def crossover(parent1, parent2, gen_no, inputdim, outputdim):
         child.bias_conn_arr.append(new_bias_conn)
 
     child.set_node_ctr()
+    child.trans_mat, _= matchromo.Crossover(parent1.trans_mat, parent2.trans_mat)
     return child
-    """
-    assert ( parent1.node_ctr == child.node_ctr or parent2.node_ctr == child.node_ctr)
-    assert ( len(parent1.conn_arr) == len(child.conn_arr) or len(parent2.conn_arr) == len(child.conn_arr))
-    if dominating_parent:
-        #print("FOUND ONE")
-        for i in range(len(dominating_parent.conn_arr)):
-            assert( dominating_parent.conn_arr[i].innov_num == child.conn_arr[i].innov_num)
-            assert( dominating_parent.conn_arr[i].source.nature + dominating_parent.conn_arr[i].destination.nature == child.conn_arr[i].source.nature + child.conn_arr[i].destination.nature)
-        assert ( set([item.node_num for item in dominating_parent.node_arr]) == set([item.node_num for item in child.node_arr])  )
-    return child
-    """
+
 
 
 def crossoverTest(parentx, parenty, gen_no, inputdim, outputdim):

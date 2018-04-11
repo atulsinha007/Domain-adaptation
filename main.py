@@ -26,7 +26,7 @@ network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target=164, rng=rand
 
 # creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))
 
-creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0))
+creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, -1.0, -1.0))
 creator.create("Individual", Chromosome, fitness=creator.FitnessMin)
 print("here network object created")
 toolbox = base.Toolbox()
@@ -36,11 +36,15 @@ def minimize_src(individual):
 	outputarr = network_obj_src.feedforward_ne(individual, final_activation=network.softmax)
 
 	neg_log_likelihood_val = give_neg_log_likelihood(outputarr, network_obj_src.resty)
-	mean_square_error_val = give_mse(outputarr, network_obj_src.resty)
+	#mean_square_error_val = give_mse(outputarr, network_obj_src.resty)
+	complexity = lambda ind: len(ind.conn_arr)
+	ind_complexity = complexity(individual)
 
+	new_tup = individual.trans_mat.calculate_cost(network_obj_src)
 	# anyways not using these as you can see in 'creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))'
 	# return neg_log_likelihood_val, mean_square_error_val, false_positve_rat, false_negative_rat
-	return (neg_log_likelihood_val, mean_square_error_val)
+	return (neg_log_likelihood_val, complexity, new_tup[0], new_tup[1] )
+
 
 
 def mycross(ind1, ind2, gen_no):
@@ -51,8 +55,8 @@ def mycross(ind1, ind2, gen_no):
 
 def mymutate_src(ind1):
 	# do_mutation(self, rate_conn_weight, rate_conn_itself, rate_node, inputdim, outputdim, max_hidden_unit, rng)
-	new_ind = ind1.do_mutation(rate_conn_weight=0.4, rate_conn_itself=0.3, rate_node=0.2, weight_factor=2,
-							   inputdim=indim, outputdim=outdim, max_hidden_unit=n_hidden, rng=random)
+	new_ind = ind1.do_mutation(rate_conn_weight=0.4, rate_conn_itself=0.3, rate_node=0.2,  rate_trans_mat = 0.2, factor_trans_mat = 1,
+						   weight_factor = 1, inputdim=indim, outputdim=outdim, max_hidden_unit=n_hidden, rng=random)
 	return ind1
 
 
