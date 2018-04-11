@@ -48,6 +48,7 @@ class Chromosome:
             self.bias_conn_arr = []
             self.bias_conn_arr = [gene.BiasConn(outputt, random.random() / 1000) for outputt in lisO]
             self.dob = 0
+
         else:
             self.node_ctr = old_chromosome.node_ctr
             self.conn_arr = old_chromosome.conn_arr
