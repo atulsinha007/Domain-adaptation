@@ -17,8 +17,8 @@ from network import Neterr
 from chromosome import Chromosome, crossover
 import traceback
 import sys
-n_hidden = 40
-indim = 64
+n_hidden = 100
+indim = 32
 outdim = 5
 #
 
@@ -281,7 +281,7 @@ def test_it_without_bp():
 
 
 def test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=0, post_st = ''):
-	pop, stats = main(play=0, NGEN=NGEN, MU=MU)
+	pop, stats = main(play=play, NGEN=NGEN, MU=MU)
 	stringh = "_with_bp" + str(play) + "_" + str(NGEN)+post_st
 	fronts = tools.sortNondominated(pop, len(pop))
 
@@ -312,9 +312,9 @@ def test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=0, post_st
 
 
 if __name__ == "__main__":
-	logf = open("log_error_main.txt", "a")
+	logf = open("./log_folder/log_error_main.txt", "a")
 	show_error = False
-	if show_error:
+	if not show_error:
 		try:
 			post_st = sys.argv[1]
 			test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
@@ -329,7 +329,7 @@ if __name__ == "__main__":
 			logf.close()
 	else:
 		post_st = sys.argv[1]
-		test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1, post_st=post_st)
+		test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st=post_st)
 	# file_ob.write( "test on one with min validation error " + str(neter.test_err(min(pop, key=lambda x: x.fitness.values[1]))))
 
 	# print(stats)

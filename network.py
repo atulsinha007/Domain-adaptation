@@ -299,43 +299,42 @@ class Neterr:
 	
 
 
-	def test_on_pareto_patch_correctone(self,pareto_set, log_correct = None): #Correct this using github
-		temp = self.inputarr
-		temper = copy.deepcopy(self.testx)
+    def test_on_pareto_patch_correctone(self,pareto_set, log_correct = None):
+        temp = self.inputarr
+        temper = copy.deepcopy(self.testx)
+        grand_lis  = []
+        for row in temper:
+            row_matrix = row.reshape((1, row.shape[0]))
+            lis = []
+            self.inputarr = row_matrix
+            for chromo in pareto_set:
 
-		grand_lis  = []
-		for row in temper:
-			row_matrix = row.reshape((1, row.shape[0]))
-			lis = []
-			self.inputarr = row_matrix
-			for chromo in pareto_set:
-				self.inputarr = trans_func(self.inputarr, chromo.trans_mat.array)
-				arr = self.feedforward_ne(chromo, transform_flag = 0)
-				assert (arr.shape[0] == 1)
-				lis.append(list(arr.reshape((arr.shape[1], ))))
-			output_of_all_nn_on_one_data_point = np.array(lis)
-			activated_output_of_all_nn_on_one_data_point = softmax(output_of_all_nn_on_one_data_point)
-			avrg = np.mean( activated_output_of_all_nn_on_one_data_point, axis = 0)
-			argmax_at_avg = avrg.argmax()
-			grand_lis.append(argmax_at_avg)
-		grand_lis_arr = np.array(grand_lis)
-		assert (grand_lis_arr.shape == self.testy.shape)
-		if log_correct is not None:
-			st = '\n\n'
-			for i in range( self.testy.shape[0]):
-				if self.testy[i] - grand_lis_arr[i] == 0:
-					print("correct ", self.testy[i])
-					st += "correct " + str(self.testy[i])+'\n'
-			st+='\n'
-			file_ob = open("./log_folder/log_correct.txt", "a")
-			file_ob.write(st)
-			file_ob.close()
+                arr = self.feedforward_ne(chromo)
+                assert (arr.shape[0] == 1)
+                lis.append(list(arr.reshape((arr.shape[1], ))))
+            output_of_all_nn_on_one_data_point = np.array(lis)
+            activated_output_of_all_nn_on_one_data_point = softmax(output_of_all_nn_on_one_data_point)
+            avrg = np.mean( activated_output_of_all_nn_on_one_data_point, axis = 0)
+            argmax_at_avg = avrg.argmax()
+            grand_lis.append(argmax_at_avg)
+        grand_lis_arr = np.array(grand_lis)
+        assert (grand_lis_arr.shape == self.testy.shape)
+        if log_correct is not None:
+            st = '\n\n'
+            for i in range( self.testy.shape[0]):
+                if self.testy[i] - grand_lis_arr[i] == 0:
+                    print("correct ", self.testy[i])
+                    st += "correct " + str(self.testy[i])+'\n'
+            st+='\n'
+            file_ob = open("./log_folder/log_correct.txt", "a")
+            file_ob.write(st)
+            file_ob.close()
 
-		difference = self.testy - grand_lis_arr
+        difference = self.testy - grand_lis_arr
 
-		to_find_mean_arr = np.where( difference != 0, 1, 0 )
-		self.inputarr = temp
-		return np.mean(to_find_mean_arr) 
+        to_find_mean_arr = np.where( difference != 0, 1, 0 )
+        self.inputarr = temp
+        return np.mean(to_find_mean_arr)
 
 
 	def test_on_pareto_patch_trans(self,pareto_set, log_correct = None):
