@@ -17,6 +17,16 @@ target_feature_size = 32
 
 # import network
 
+def trans_and_clump(full_source_set, seventyfive_target_set, W_mat):
+    arr = trans_func(seventyfive_target_set[0], W_mat) #expecting seventy set as tuple of 2d and 1d array
+    arr = np.concatenate((full_source_set[0], arr), axis=0)
+    labels = np.concatenate((full_source_set[1], seventyfive_target_set[1]))
+    return arr, labels
+
+
+def trans_func(arr, W_mat):
+    transformed_arr = np.transpose(np.dot(W_mat, np.transpose(arr)))
+    return transformed_arr
 
 class Chromosome:
     """
@@ -144,7 +154,18 @@ class Chromosome:
 
         return new_encoding
 
-    def modify_thru_backprop(self, inputdim, outputdim, trainx, trainy, epochs=10, learning_rate=0.1, n_par=10):
+    def modify_thru_backprop(self, inputdim, outputdim, trainx = None, trainy = None, networkobj = None, epochs=10, learning_rate=0.1, n_par=10):
+        if networkobj and not (trainx or trainy) :
+            tup= trans_and_clump(networkobj.full_source_set, networkobj.seventyfive_target_set, self.trans_mat.array)
+            resty = tup[1]
+            resty = np.ravel(resty)
+            #inputarr = tup[0]
+            restx = tup[0]
+            #testy = np.ravel(testy)
+            trainx = tf.Variable(initial_value = restx, name='rest_setx',
+                                         dtype=tf.float32)
+            trainy = tf.Variable(initial_value = resty, name='rest_sety', dtype=tf.int32)
+
 
         x = tf.placeholder(shape=[None, inputdim], dtype=tf.float32)
         y = tf.placeholder(shape=[None, ], dtype=tf.int32)

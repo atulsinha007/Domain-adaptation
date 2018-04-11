@@ -143,7 +143,7 @@ def main(seed=None, play=0, NGEN=40, MU=4 * 10):
 				to_bp_lis = cluster.give_cluster_head(offspring, int(MU * bp_rate))
 				assert (to_bp_lis[0] in offspring)
 				print("doing bp")
-				[item.modify_thru_backprop(indim, outdim, network_obj_src.rest_setx, network_obj_src.rest_sety,
+				[item.modify_thru_backprop(indim, outdim, trainx = None, trainy = None, networkobj = network_obj_src,
 										   epochs=20, learning_rate=0.1, n_par=10) for item in to_bp_lis]
 
 				# Evaluate the individuals with an invalid fitness
