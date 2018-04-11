@@ -22,7 +22,7 @@ indim = 64
 outdim = 5
 #
 
-network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target=164, rng=random)
+network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target=500, rng=random)
 
 # creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))
 
@@ -33,17 +33,17 @@ toolbox = base.Toolbox()
 
 
 def minimize_src(individual):
-	outputarr = network_obj_src.feedforward_ne(individual, final_activation=network.softmax)
+	outputarr = network_obj_src.feedforward_ne_trans(individual, final_activation=network.softmax)
 
 	neg_log_likelihood_val = give_neg_log_likelihood(outputarr, network_obj_src.resty)
 	#mean_square_error_val = give_mse(outputarr, network_obj_src.resty)
 	complexity = lambda ind: len(ind.conn_arr)
 	ind_complexity = complexity(individual)
 
-	new_tup = individual.trans_mat.calculate_cost(network_obj_src)
+	new_tup = individual.trans_mat.closeness_cost(network_obj_src)
 	# anyways not using these as you can see in 'creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))'
 	# return neg_log_likelihood_val, mean_square_error_val, false_positve_rat, false_negative_rat
-	return (neg_log_likelihood_val, complexity, new_tup[0], new_tup[1] )
+	return (neg_log_likelihood_val, ind_complexity, new_tup[0], new_tup[1] )
 
 
 
@@ -280,8 +280,8 @@ def test_it_without_bp():
 	print(note_this_string(st, stringh))
 
 
-def test_it_with_bp(play=1, NGEN=60, MU=4 * 15, play_with_whole_pareto=0, post_st = ''):
-	pop, stats = main(play=play, NGEN=NGEN, MU=MU)
+def test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=0, post_st = ''):
+	pop, stats = main(play=0, NGEN=NGEN, MU=MU)
 	stringh = "_with_bp" + str(play) + "_" + str(NGEN)+post_st
 	fronts = tools.sortNondominated(pop, len(pop))
 
@@ -303,7 +303,7 @@ def test_it_with_bp(play=1, NGEN=60, MU=4 * 15, play_with_whole_pareto=0, post_s
 
 	print("\ntest: test on one with min validation error",
 		  network_obj_src.test_err(min(pop, key=lambda x: x.fitness.values[1])))
-	tup = network_obj_src.test_on_pareto_patch_correctone(pareto_front)
+	tup = network_obj_src.test_on_pareto_patch_trans(pareto_front)
 
 	print("\n test: avg on sampled pareto set", tup)
 
@@ -313,18 +313,23 @@ def test_it_with_bp(play=1, NGEN=60, MU=4 * 15, play_with_whole_pareto=0, post_s
 
 if __name__ == "__main__":
 	logf = open("log_error_main.txt", "a")
-	try:
+	show_error = False
+	if show_error:
+		try:
+			post_st = sys.argv[1]
+			test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
+		except Exception as e:
+			print("Error! Error! Error!")
+			logf.write('\n\n')
+			localtime = time.localtime(time.time())
+			logf.write(str(localtime) + '\n')
+			traceback.print_exc(file=logf)
+			logf.write('\n\n')
+		finally:
+			logf.close()
+	else:
 		post_st = sys.argv[1]
-		test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
-	except Exception as e:
-		print("Error! Error! Error!")
-		logf.write('\n\n')
-		localtime = time.localtime(time.time())
-		logf.write(str(localtime) + '\n')
-		traceback.print_exc(file=logf)
-		logf.write('\n\n')
-	finally:
-		logf.close()
+		test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1, post_st=post_st)
 	# file_ob.write( "test on one with min validation error " + str(neter.test_err(min(pop, key=lambda x: x.fitness.values[1]))))
 
 	# print(stats)

@@ -1,4 +1,11 @@
 import numpy as np
+import copy
+import sys
+import time
+
+def dist(transformed_target, source_instance):
+	return np.sqrt(np.sum((transformed_target - source_instance)**2))
+
 class MatChromo:
 	def __init__(self, source_dim, target_dim, arr=None, rng = np.random):
 		self.array = rng.random((source_dim, target_dim))
@@ -43,7 +50,7 @@ class MatChromo:
 			index = rng.randint(0, arr.shape[1])
 			if rng.random() < m_prob:
 				arr[row][index] += rng.uniform(-1, 1) * m_fac
-		del (self.fitness.values)
+		
 
 def Crossover(ind1, ind2, cxpb  = 1, rng = np.random):
 	arr1 = ind1.array
@@ -55,6 +62,4 @@ def Crossover(ind1, ind2, cxpb  = 1, rng = np.random):
 				temp = copy.deepcopy(arr1[row][col])
 				arr1[row][col] = alpha*arr1[row][col] + (1-alpha)*arr2[row][col]
 				arr2[row][col] = alpha*arr2[row][col] + (1-alpha)*temp
-	del ind1.fitness.values
-	del ind2.fitness.values
 	return ind1, ind2
