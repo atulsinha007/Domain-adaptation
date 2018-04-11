@@ -312,7 +312,7 @@ def test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=0, post_st
 
 
 if __name__ == "__main__":
-	logf = open("./log_folder/log_error_main.txt", "a")
+	logf = open("./log_folder/log_error_main_transform.txt", "a")
 	show_error = False
 	if not show_error:
 		try:
