@@ -221,7 +221,7 @@ class Neterr:
 	def feedforward_ne_trans(self, chromosome, middle_activation=relu, final_activation=sigmoid, transform_flag = 1, play = 0):
 
 		if transform_flag:
-			tup = trans_and_clump(self.full_source_set, self.seventyfive_target_set, chromosome.trans_mat.array)
+			tup = trans_and_clump( self.seventyfive_target_set, self.full_source_set, chromosome.trans_mat.array)
 			resty = tup[1]
 			self.resty = np.ravel(resty)
 			self.inputarr = tup[0]

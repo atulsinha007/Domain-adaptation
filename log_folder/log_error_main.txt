@@ -1,0 +1,9 @@
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=12, tm_hour=12, tm_min=57, tm_sec=1, tm_wday=3, tm_yday=102, tm_isdst=0)
+Traceback (most recent call last):
+  File "main_trans_src_to_tar.y", line 319, in <module>
+    post_st = sys.argv[1]
+IndexError: list index out of range
+
+
