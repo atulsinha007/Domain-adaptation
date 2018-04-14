@@ -55,8 +55,8 @@ def mycross(ind1, ind2, gen_no):
 
 def mymutate_src(ind1):
 	# do_mutation(self, rate_conn_weight, rate_conn_itself, rate_node, inputdim, outputdim, max_hidden_unit, rng)
-	new_ind = ind1.do_mutation(rate_conn_weight=0.4, rate_conn_itself=0.3, rate_node=0.2,  rate_trans_mat = 0.2, factor_trans_mat = 1,
-						   weight_factor = 1, inputdim=indim, outputdim=outdim, max_hidden_unit=n_hidden, rng=random)
+	new_ind = ind1.do_mutation(rate_conn_weight=0.4, rate_conn_itself=0.3, rate_node=0.2,  rate_trans_mat = 0.2, factor_trans_mat = .01,
+						   weight_factor = .01, inputdim=indim, outputdim=outdim, max_hidden_unit=n_hidden, rng=random)
 	return ind1
 
 
@@ -294,8 +294,11 @@ def test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=0, post_st
 	if play_with_whole_pareto or len(fronts[0]) < 30:
 		pareto_front = fronts[0]
 	else:
-
 		pareto_front = random.sample(fronts[0], 30)
+	with open("log_pareto_mat_"+post_st+".pickle", "wb") as fp:
+		lis_of_mat = [item.trans_mat.array for item in pareto_front]
+		pickle.dump(lis_of_mat, fp)
+
 
 	print("Pareto Front: ")
 	for i in range(len(pareto_front)):
