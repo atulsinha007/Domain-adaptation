@@ -28,8 +28,8 @@ import copy
 import sys
 import numpy 
 import time
-NGEN = 100
-pop_size = 200
+NGEN = 200
+pop_size = 4 * 50
 cxpb = .8
 m_fac = .2
 m_prob = .2
@@ -192,6 +192,12 @@ toolbox.register("mutate", myMutate, rng = np.random)
 toolbox.register("select", tools.selNSGA2)
 #toolbox.register("select", tools.selRoulette)
 #----------
+def ensemble(pop_lis):
+	new_3d_arr = np.array([item.array for item in pop_lis])
+	me = np.mean(new_3d_arr, axis = 0)
+	assert ( me.shape == pop_lis[0].array.shape)
+	return me
+
 
 def main():
 	random.seed(64)
@@ -275,12 +281,14 @@ def main():
 		record = stats.compile(pop)
 		logbook.record(gen=g, evals=len(invalid_ind), **record)
 	print(logbook.stream)
-	ind_min = np.argmin(fitnesses)
-	print(pop[ ind_min ])
+	#ind_min = np.argmin(fitnesses)
+	decided_ar = ensemble(pop)
+
+	#print(decided_ar)
 	post_st = sys.argv[1]
-	fs= open("./pickle_jar/dublue_t"+post_st+".pickle", "wb")
-	pickle.dump(pop[ind_min].array, fs)
-	print(pop[ind_min].array)
+	fs= open("./pickle_jar/dublue_t_ensemble"+post_st+".pickle", "wb")
+	pickle.dump(decided_ar, fs)
+	print(decided_ar)
 	fs.close()
 	print("-- End of (successful) evolution --")
 
