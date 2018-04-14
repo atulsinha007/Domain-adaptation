@@ -11,6 +11,7 @@ from deap.benchmarks.tools import diversity, convergence
 from deap import creator
 from deap import tools
 import os
+import pickle
 from population import *
 import network
 from network import Neterr
