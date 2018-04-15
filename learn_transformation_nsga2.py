@@ -28,14 +28,14 @@ import copy
 import sys
 import numpy 
 import time
-NGEN = 300
+NGEN = 1000
 pop_size = 4 * 50
 cxpb = .8
 m_fac = .2
 m_prob = .2
 
 
-np.random.seed(10)
+np.random.seed(100)
 rng = np.random
 pstri = "./pickle_jar/"
 

@@ -61,10 +61,10 @@ class Neterr:
                 W_mat = pickle.load(fp)
 
 
-            rest_set = np.concatenate((rest_set[0], np.transpose(np.dot(W_mat, np.transpose(trest_set[0]))))), np.concatenate((rest_set[1], trest_set[1]))
+            rest_set = np.concatenate((trest_set[0], np.transpose(np.dot(W_mat, np.transpose(rest_set[0]))))), np.concatenate((trest_set[1], rest_set[1]))
 
             #print("here ", rest_set[0].shape, rest_set[1].shape)
-            test_set = (np.transpose( np.dot(W_mat, np.transpose(ttest_set[0]))), ttest_set[1])
+            test_set = ttest_set[0], ttest_set[1]#(np.transpose( np.dot(W_mat, np.transpose(ttest_set[0]))), ttest_set[1])
             #print("here ", test_set[0].shape, test_set[1].shape)
         elif change_to_target == 164:
 

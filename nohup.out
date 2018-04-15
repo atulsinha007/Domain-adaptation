@@ -4032,3 +4032,11 @@ test: test on one with min validation error 0.5454545454545454
 
  test: avg on sampled pareto set 0.5454545454545454
 0
+Traceback (most recent call last):
+  File "learn_transformation_nsga2.py", line 23, in <module>
+    from deap import base
+ModuleNotFoundError: No module named 'deap'
+Traceback (most recent call last):
+  File "learn_transformation_nsga2.py", line 23, in <module>
+    from deap import base
+ModuleNotFoundError: No module named 'deap'
