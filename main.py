@@ -18,15 +18,15 @@ from chromosome import Chromosome, crossover
 import traceback
 import sys
 n_hidden = 40
-indim = 64
+indim = 32
 outdim = 5
 #
 
-network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target=164, rng=random)
+network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target=100, rng=random)
 
 # creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))
 
-creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0))
+creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, -1.0))
 creator.create("Individual", Chromosome, fitness=creator.FitnessMin)
 print("here network object created")
 toolbox = base.Toolbox()
@@ -40,7 +40,7 @@ def minimize_src(individual):
 
 	# anyways not using these as you can see in 'creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))'
 	# return neg_log_likelihood_val, mean_square_error_val, false_positve_rat, false_negative_rat
-	return (neg_log_likelihood_val, mean_square_error_val)
+	return (neg_log_likelihood_val, mean_square_error_val, len(individual.conn_arr))
 
 
 def mycross(ind1, ind2, gen_no):
@@ -78,7 +78,7 @@ def main(seed=None, play=0, NGEN=40, MU=4 * 10):
 	# MU has to be a multiple of 4. period.
 	CXPB = 0.9
 
-	stats = tools.Statistics(lambda ind: ind.fitness.values[1])
+	stats = tools.Statistics(lambda ind: (ind.fitness.values[0], ind.fitness.values[1], ind.fitness.values[2]))
 	# stats.register("avg", numpy.mean, axis=0)
 	# stats.register("std", numpy.std, axis=0)
 	stats.register("min", numpy.min, axis=0)
@@ -185,7 +185,7 @@ def main(seed=None, play=0, NGEN=40, MU=4 * 10):
 		logbook.record(gen=gen, evals=len(invalid_ind), **record)
 		anost = logbook.stream
 		liso = [item.rstrip() for item in anost.split("\t")]
-		mse = float(liso[3])
+		#mse = float(liso[3])
 
 		print(anost)
 		stri += anost + '\n'
@@ -311,7 +311,7 @@ if __name__ == "__main__":
 	logf = open("log_error_main.txt", "a")
 	try:
 		post_st = sys.argv[1]
-		test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
+		test_it_with_bp(play=1, NGEN=200, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
 	except Exception as e:
 		print("Error! Error! Error!")
 		logf.write('\n\n')
