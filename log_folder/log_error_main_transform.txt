@@ -1,0 +1,41 @@
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=13, tm_hour=1, tm_min=4, tm_sec=3, tm_wday=4, tm_yday=103, tm_isdst=0)
+Traceback (most recent call last):
+  File "main_transform.py", line 321, in <module>
+    test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1, post_st = post_st)
+  File "main_transform.py", line 304, in test_it_with_bp
+    pickle.dump(fp, pareto_front)
+NameError: name 'pickle' is not defined
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=13, tm_hour=1, tm_min=6, tm_sec=37, tm_wday=4, tm_yday=103, tm_isdst=0)
+Traceback (most recent call last):
+  File "main_transform.py", line 322, in <module>
+    test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1, post_st = post_st)
+  File "main_transform.py", line 305, in test_it_with_bp
+    pickle.dump(fp, pareto_front)
+TypeError: file must have a 'write' attribute
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=13, tm_hour=5, tm_min=25, tm_sec=13, tm_wday=4, tm_yday=103, tm_isdst=0)
+Traceback (most recent call last):
+  File "main_transform.py", line 322, in <module>
+    test_it_with_bp(play=1, NGEN=1000, MU=4 * 50, play_with_whole_pareto=1, post_st = post_st)
+  File "main_transform.py", line 285, in test_it_with_bp
+    pop, stats = main(play=play, NGEN=NGEN, MU=MU)
+  File "main_transform.py", line 183, in main
+    for ind, fit in zip(invalid_ind, fitnesses):
+  File "main_transform.py", line 37, in minimize_src
+    outputarr = network_obj_src.feedforward_ne_trans(individual, final_activation=network.softmax)
+  File "/home/placements2018/forgit/Domain-adaptation/network.py", line 235, in feedforward_ne_trans
+    chromosome.conn_arr)  # list of connections with string type breaks to seperate
+  File "/home/placements2018/forgit/Domain-adaptation/network.py", line 33, in priortize_connections
+    dict[tup[0].nature+tup[1].nature].append(concsn)
+KeyError: 'H2H2'
+
+

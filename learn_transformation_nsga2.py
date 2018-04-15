@@ -28,14 +28,14 @@ import copy
 import sys
 import numpy 
 import time
-NGEN = 200
+NGEN = 300
 pop_size = 4 * 50
 cxpb = .8
 m_fac = .2
 m_prob = .2
 
 
-np.random.seed(1)
+np.random.seed(10)
 rng = np.random
 pstri = "./pickle_jar/"
 
@@ -200,7 +200,7 @@ def ensemble(pop_lis):
 
 
 def main():
-	random.seed(64)
+	random.seed(1064)
 	global NGEN, pop_size
 	# create an initial population of 300 individuals (where
 	# each individual is a list of integers)
