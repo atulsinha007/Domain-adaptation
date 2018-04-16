@@ -28,8 +28,8 @@ import copy
 import sys
 import numpy 
 import time
-NGEN = 300
-pop_size = 4 * 50
+NGEN = 1000
+pop_size = 4 * 75
 cxpb = .8
 m_fac = .2
 m_prob = .2
