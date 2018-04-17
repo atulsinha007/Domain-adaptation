@@ -90,7 +90,7 @@ source_dim = source_rest_arr.shape[1]
 creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0))
 class MatChromo:
 	def __init__(self, source_dim, target_dim, arr=None, rng = np.random):
-		self.array = rng.random((source_dim, target_dim))
+		self.array = np.identity(source_dim)
 creator.create("Individual", MatChromo, fitness=creator.FitnessMin)
 
 
