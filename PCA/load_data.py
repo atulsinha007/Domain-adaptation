@@ -2,11 +2,11 @@ import cv2
 import os
 import numpy as np
 
-TRAIN_DIR = '/home/ak/Documents/forgit/Project-PCA/data_set/new_amazon/'
-TEST_DIR = '/home/ak/Documents/forgit/Project-PCA/data_set/new_dslr/'
+TRAIN_DIR = '/home/ak/Documents/forgit/Domain-adaptation/PCA/data_set/amazon/'
+TEST_DIR = '/home/ak/Documents/forgit/Domain-adaptation/PCA/data_set/dslr/'
 
-train_dir = '/home/ak/Documents/forgit/Project-PCA/Generated/new_amazon/'
-test_dir = '/home/ak/Documents/forgit/Project-PCA/Generated/new_dslr/'
+train_dir = '/home/ak/Documents/forgit/Domain-adaptation/PCA/Generated/amazon/'
+test_dir = '/home/ak/Documents/forgit/Domain-adaptation/PCA/Generated/dslr/'
 
 
 def create_dataset(fileList, domain, dir_name):
@@ -17,15 +17,15 @@ def create_dataset(fileList, domain, dir_name):
 		img = cv2.imread(file)
 		resized_img = cv2.resize(img, (100,100))
 		resized_img = cv2.cvtColor( resized_img, cv2.COLOR_RGB2GRAY )
-		cv2.imwrite('/home/ak/Documents/forgit/Project-PCA/Generated/' + domain + '/'+ oldfile + '_resized_bw',resized_img)
+		cv2.imwrite('/home/ak/Documents/forgit/Domain-adaptation/PCA/Generated/' + domain + '/'+ oldfile + '_resized_bw',resized_img)
 		
 
 def create():	
 
 	fileList = sorted(os.listdir(TRAIN_DIR))
-	create_dataset(fileList, "new_amazon", TRAIN_DIR)
+	create_dataset(fileList, "amazon", TRAIN_DIR)
 	fileList = sorted(os.listdir(TEST_DIR))
-	create_dataset(fileList, "new_dslr", TEST_DIR)
+	create_dataset(fileList, "dslr", TEST_DIR)
 
 
 def read_data(fileList, dir_name):
