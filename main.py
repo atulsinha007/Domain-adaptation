@@ -22,7 +22,7 @@ indim = 32
 outdim = 5
 #
 
-network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target=1, rng=random)
+network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target=100, rng=random)
 
 # creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))
 
@@ -34,13 +34,13 @@ toolbox = base.Toolbox()
 
 def minimize_src(individual):
 	outputarr = network_obj_src.feedforward_ne(individual, final_activation=network.softmax)
-
+	outputarr_tar = network_obj_src.feedforward_ne_for_tar(individual, final_activation=network.softmax)
 	neg_log_likelihood_val = give_neg_log_likelihood(outputarr, network_obj_src.resty)
-	mean_square_error_val = give_mse(outputarr, network_obj_src.resty)
-
+	# mean_square_error_val = give_mse(outputarr, network_obj_src.resty)
+	neg_log_likelihood_val_tar = give_neg_log_likelihood(outputarr_tar, network_obj_src.tar_transformed_resty)
 	# anyways not using these as you can see in 'creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))'
 	# return neg_log_likelihood_val, mean_square_error_val, false_positve_rat, false_negative_rat
-	return (neg_log_likelihood_val, mean_square_error_val, len(individual.conn_arr))
+	return (neg_log_likelihood_val, neg_log_likelihood_val_tar, len(individual.conn_arr))
 
 
 def mycross(ind1, ind2, gen_no):
@@ -311,7 +311,7 @@ if __name__ == "__main__":
 	logf = open("log_error_main.txt", "a")
 	try:
 		post_st = sys.argv[1]
-		test_it_with_bp(play=1, NGEN=200, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
+		test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
 	except Exception as e:
 		print("Error! Error! Error!")
 		logf.write('\n\n')

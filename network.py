@@ -61,8 +61,9 @@ class Neterr:
                 W_mat = pickle.load(fp)
 
 
-            rest_set = np.concatenate((rest_set[0], np.transpose(np.dot(W_mat, np.transpose(trest_set[0]))))), np.concatenate((rest_set[1], trest_set[1]))
-
+            # rest_set = np.concatenate((rest_set[0], np.transpose(np.dot(W_mat, np.transpose(trest_set[0]))))), np.concatenate((rest_set[1], trest_set[1]))
+            self.tar_transformed_restx = np.transpose(np.dot(W_mat, np.transpose(trest_set[0])))
+            self.tar_transformed_resty = np.ravel(trest_set[1])
             #print("here ", rest_set[0].shape, rest_set[1].shape)
             test_set = (np.transpose( np.dot(W_mat, np.transpose(ttest_set[0]))), ttest_set[1])
             #print("here ", test_set[0].shape, test_set[1].shape)
@@ -97,9 +98,6 @@ class Neterr:
 
             rest_set = np.concatenate((rest_set[0], np.transpose(np.dot(W_mat, np.transpose(trest_set[0]))))), np.concatenate((rest_set[1], trest_set[1]))
 
-
-
-
             #print("here ", rest_set[0].shape, rest_set[1].shape)
             test_set = (np.transpose( np.dot(W_mat, np.transpose(ttest_set[0]))), ttest_set[1])
             #print("here ", test_set[0].shape, test_set[1].shape)
@@ -121,41 +119,7 @@ class Neterr:
         #self.inputarr = inputarr
         self.inputarr = self.restx       
         # FOR ANY CHANGE IN DATASET, CHANGE DIMENSION NO. MENTIONED IN THESE THREE FILES - cluster.py, chromosome.py and main_just_tar.py
-        self.restx = rest_set[0]
-        resty = rest_set[1]
-        self.testx = test_set[0]
-        testy = test_set[1]
-        #print("one time", resty.shape, testy.shape, self.restx.shape)
-
-        self.resty = np.ravel(resty)
-        self.testy = np.ravel(testy)
-        self.rest_setx = tf.Variable(initial_value = self.restx, name='rest_setx',
-                                     dtype=tf.float32)
-        self.rest_sety = tf.Variable(initial_value = self.resty, name='rest_sety', dtype=tf.int32)
-        self.test_setx = tf.Variable(initial_value = self.testx, name='rest_sety',
-                                     dtype=tf.float32)
-        self.test_sety = tf.Variable(initial_value = self.testy, name='test_sety', dtype=tf.int32)
-        #self.inputarr = inputarr
-        self.inputarr = self.restx
-        # FOR ANY CHANGE IN DATASET, CHANGE DIMENSION NO. MENTIONED IN THESE THREE FILES - cluster.py, chromosome.py and main_just_tar.py
-        self.restx = rest_set[0]
-        resty = rest_set[1]
-        self.testx = test_set[0]
-        testy = test_set[1]
-        #print("one time", resty.shape, testy.shape, self.restx.shape)
-
-        self.resty = np.ravel(resty)
-        self.testy = np.ravel(testy)
-        self.rest_setx = tf.Variable(initial_value = self.restx, name='rest_setx',
-                                     dtype=tf.float32)
-        self.rest_sety = tf.Variable(initial_value = self.resty, name='rest_sety', dtype=tf.int32)
-        self.test_setx = tf.Variable(initial_value = self.testx, name='rest_sety',
-                                     dtype=tf.float32)
-        self.test_sety = tf.Variable(initial_value = self.testy, name='test_sety', dtype=tf.int32)
-        #self.inputarr = inputarr
-        self.inputarr = self.restx
-        #print("shape here",self.restx.shape)
-    
+        
 
     def feedforward_cm(self, chromo, middle_activation = relu, final_activation = sigmoid,play = 0):
 
@@ -169,6 +133,56 @@ class Neterr:
         return output
 
 
+    def feedforward_ne_for_tar(self,chromosome,middle_activation=relu,final_activation=sigmoid, play = 0):
+
+
+        #print("inside feedforward")
+
+        conn_list = priortize_connections(
+            chromosome.conn_arr)  # list of connections with string type breaks to seperate
+        #[item.pp() for item in conn_list if type(item) != str]
+        """for item in conn_list :
+            if type(item) != str:
+                item.pp()
+            else:
+                print(item)
+        """
+        self.inputarr = self.tar_transformed_restx
+
+        return_arr = np.array([])
+        for i in range(self.inputarr.shape[0]):
+
+            storage = [0.0 for i in range(self.hidden_unit_lim + self.outputdim)]   #wtf!! there was an error here because I wrote 0 instead of 0.0!
+            storage = np.array([0.0]+list(self.inputarr[i])+storage) #here [0] is dummy storage as we use '1' indexing for node_ctr
+
+            node_num_lis=[]
+            for connection in conn_list:
+
+                if type(connection)==str:
+                    #print("before",storage)
+                    for node_num in node_num_lis:
+                        storage[node_num]=middle_activation(storage[node_num])
+                    node_num_lis=[]
+                    #print("after",storage)
+                    continue
+
+                tup = connection.get_couple()
+                node_num_lis.append(tup[1].node_num)
+                weight = connection.__getattribute__('weight')
+                if connection.status == True:
+                    #connection.pp()
+                    #print(storage[tup[1].node_num], storage[tup[0].node_num]*weight)
+                    #print(
+                    storage[tup[1].node_num] += storage[tup[0].node_num]*weight
+                    #print(storage)
+            #print(storage)
+
+            bias_weights=[bn.weight for bn in chromosome.bias_conn_arr]
+            for p in range(len(bias_weights)):
+                storage[self.inputdim + 1+p]    += -1*bias_weights[p]
+            output_part = storage[self.inputdim+1:self.outputdim+self.inputdim+1]
+            return_arr = np.concatenate((return_arr,output_part))
+        return final_activation(return_arr.reshape((self.inputarr.shape[0],self.outputdim)))       #a 2d matrix of dimension #datapoints X #outputdim
 
         
 
@@ -187,7 +201,7 @@ class Neterr:
             else:
                 print(item)
         """
-
+        #self.inputarr = self.restx
         return_arr = np.array([])
         for i in range(self.inputarr.shape[0]):
 
@@ -267,7 +281,7 @@ class Neterr:
         self.inputarr = temp
         return np.mean(lis),minh,ind
 
-
+    
     def test_on_pareto_patch_correctone(self,pareto_set, log_correct = None):
         temp = self.inputarr
         temper = copy.deepcopy(self.testx)
@@ -279,6 +293,7 @@ class Neterr:
             for chromo in pareto_set:
 
                 arr = self.feedforward_ne(chromo)
+                print(arr.shape)
                 assert (arr.shape[0] == 1)
                 lis.append(list(arr.reshape((arr.shape[1], ))))
             output_of_all_nn_on_one_data_point = np.array(lis)

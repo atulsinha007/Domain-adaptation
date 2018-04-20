@@ -100,3 +100,59 @@ Traceback (most recent call last):
 ValueError: could not convert string to float: '[  1.62706134 342.99776082 160.        ]'
 
 
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=21, tm_hour=1, tm_min=47, tm_sec=25, tm_wday=5, tm_yday=111, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1, post_st = post_st)
+  File "main.py", line 280, in test_it_with_bp
+    pop, stats = main(play=play, NGEN=NGEN, MU=MU)
+  File "main.py", line 102, in main
+    for ind, fit in zip(invalid_ind, fitnesses):
+  File "main.py", line 37, in minimize_src
+    outputarr_tar = network_obj_src.feedforward_ne_for_tar(individual, final_activation=network.softmax)
+  File "/home/ak/Documents/forgit/Domain-adaptation/network.py", line 150, in feedforward_ne_for_tar
+    self.inputarr = self.tar_transformed_restx
+AttributeError: 'Neterr' object has no attribute 'tar_transformed_restx'
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=21, tm_hour=1, tm_min=49, tm_sec=18, tm_wday=5, tm_yday=111, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1, post_st = post_st)
+  File "main.py", line 302, in test_it_with_bp
+    tup = network_obj_src.test_on_pareto_patch_correctone(pareto_front)
+  File "/home/ak/Documents/forgit/Domain-adaptation/network.py", line 296, in test_on_pareto_patch_correctone
+    assert (arr.shape[0] == 1)
+AssertionError
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=21, tm_hour=1, tm_min=50, tm_sec=43, tm_wday=5, tm_yday=111, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1, post_st = post_st)
+  File "main.py", line 302, in test_it_with_bp
+    tup = network_obj_src.test_on_pareto_patch_correctone(pareto_front)
+  File "/home/ak/Documents/forgit/Domain-adaptation/network.py", line 296, in test_on_pareto_patch_correctone
+    assert (arr.shape[0] == 1)
+AssertionError
+
+
+
+
+time.struct_time(tm_year=2018, tm_mon=4, tm_mday=21, tm_hour=1, tm_min=51, tm_sec=51, tm_wday=5, tm_yday=111, tm_isdst=0)
+Traceback (most recent call last):
+  File "main.py", line 314, in <module>
+    test_it_with_bp(play=1, NGEN=2, MU=4 * 5, play_with_whole_pareto=1, post_st = post_st)
+  File "main.py", line 302, in test_it_with_bp
+    tup = network_obj_src.test_on_pareto_patch_correctone(pareto_front)
+  File "/home/ak/Documents/forgit/Domain-adaptation/network.py", line 297, in test_on_pareto_patch_correctone
+    assert (arr.shape[0] == 1)
+AssertionError
+
+
