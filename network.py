@@ -57,7 +57,7 @@ class Neterr:
             with open("./pickle_jar/tar_tup.pickle", "rb") as fp:
                 trest_set, ttest_set = pickle.load(fp)
                 #print(trest_set[0].shape, trest_set[1].shape, ttest_set[0].shape, ttest_set[1].shape)
-            with open("./pickle_jar/dublue_t_ensemble_mega_ensemble_hog_normal.pickle", "rb") as fp:
+            with open("./pickle_jar/dublue_t_ensembleidentity_test.pickle", "rb") as fp:
                 W_mat = pickle.load(fp)
 
 

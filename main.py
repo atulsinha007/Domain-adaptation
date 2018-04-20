@@ -22,7 +22,7 @@ indim = 32
 outdim = 5
 #
 
-network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target=1, rng=random)
+network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target=100, rng=random)
 
 # creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))
 
@@ -311,7 +311,7 @@ if __name__ == "__main__":
 	logf = open("log_error_main.txt", "a")
 	try:
 		post_st = sys.argv[1]
-		test_it_with_bp(play=1, NGEN=200, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
+		test_it_with_bp(play=1, NGEN=10, MU=4 * 5, play_with_whole_pareto=1, post_st = post_st)
 	except Exception as e:
 		print("Error! Error! Error!")
 		logf.write('\n\n')
