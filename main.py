@@ -311,7 +311,7 @@ if __name__ == "__main__":
 	logf = open("log_error_main.txt", "a")
 	try:
 		post_st = sys.argv[1]
-		test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
+		test_it_with_bp(play=1, NGEN=1000, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
 	except Exception as e:
 		print("Error! Error! Error!")
 		logf.write('\n\n')
