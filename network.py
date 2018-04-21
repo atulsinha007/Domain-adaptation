@@ -57,7 +57,7 @@ class Neterr:
             with open("./pickle_jar/tar_tup.pickle", "rb") as fp:
                 trest_set, ttest_set = pickle.load(fp)
                 #print(trest_set[0].shape, trest_set[1].shape, ttest_set[0].shape, ttest_set[1].shape)
-            with open(pic_kle, "rb") as fp:
+            with open("./pickle_jar/dublue_pareto_set_of_pareto.pickle", "rb") as fp:
                 lis_of_dublue = pickle.load(fp)
                 W_mat = lis_of_dublue[index]
 

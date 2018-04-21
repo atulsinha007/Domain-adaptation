@@ -246,7 +246,7 @@ def note_this_string(new_st, stringh):
 		flag_ob.close()
 	"""
 
-	new_file_ob = open("log_folder/log" + stringh + ".txt", "a+")
+	new_file_ob = open("log_folder/log" + "_main_over_main" + ".txt", "a+")
 	new_file_ob.write(str(ctr) + " " + new_st + "\n")
 	new_file_ob.close()
 	return ctr
