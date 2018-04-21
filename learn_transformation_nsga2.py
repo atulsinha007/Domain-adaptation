@@ -282,8 +282,8 @@ def main():
 		logbook.record(gen=g, evals=len(invalid_ind), **record)
 	print(logbook.stream)
 	#ind_min = np.argmin(fitnesses)
-	decided_ar = ensemble(pop)
-
+	#decided_ar = ensemble(pop)
+	lis = [item.array for item in pop]
 	#print(decided_ar)
 	post_st = sys.argv[1]
 	fs= open("./pickle_jar/dublue_t_ensemble"+post_st+".pickle", "wb")
@@ -291,7 +291,10 @@ def main():
 	print(decided_ar)
 	fs.close()
 	print("-- End of (successful) evolution --")
-
+	fs= open("./pickle_jar/dublue_pareto"+post_st+".pickle", "wb")
+	pickle.dump(lis, fs)
+	#print(decided_ar)
+	fs.close()
 	best_ind = tools.selBest(pop, 1)[0]
 	print("Best individual is %s, %s" % (best_ind.array, best_ind.fitness.values))
 

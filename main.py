@@ -22,7 +22,7 @@ indim = 32
 outdim = 5
 #
 
-network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target=100, rng=random)
+network_obj_src = Neterr(indim, outdim, n_hidden, change_to_target=100, rng=random, index = sys.argv[2])
 
 # creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))
 

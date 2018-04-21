@@ -33,7 +33,7 @@ def priortize_connections(conn_lis):
         dict[tup[0].nature+tup[1].nature].append(concsn)
     return dict['IH1']+['breakH1']+dict['H1H2']+dict['IH2']+['breakH2']+dict['H2O']+dict['H1O']+dict['IO']
 class Neterr:
-    def __init__(self, inputdim, outputdim,   hidden_unit_lim , change_to_target , rng = random):# HYPERPARAMETER hid_unit_lim
+    def __init__(self, inputdim, outputdim,   hidden_unit_lim , change_to_target , rng = random, index= None):# HYPERPARAMETER hid_unit_lim
         self.inputdim = inputdim
         self.outputdim = outputdim
         #self.inputarr=inputarr  #self explanatory
@@ -57,8 +57,9 @@ class Neterr:
             with open("./pickle_jar/tar_tup.pickle", "rb") as fp:
                 trest_set, ttest_set = pickle.load(fp)
                 #print(trest_set[0].shape, trest_set[1].shape, ttest_set[0].shape, ttest_set[1].shape)
-            with open("./pickle_jar/dublue_t_ensemble_mega_ensemble_hog_normal.pickle", "rb") as fp:
-                W_mat = pickle.load(fp)
+            with open(pic_kle, "rb") as fp:
+                lis_of_dublue = pickle.load(fp)
+                W_mat = lis_of_dublue[index]
 
 
             # rest_set = np.concatenate((rest_set[0], np.transpose(np.dot(W_mat, np.transpose(trest_set[0]))))), np.concatenate((rest_set[1], trest_set[1]))
