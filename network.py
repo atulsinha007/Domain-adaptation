@@ -59,7 +59,7 @@ class Neterr:
                 #print(trest_set[0].shape, trest_set[1].shape, ttest_set[0].shape, ttest_set[1].shape)
             with open("./pickle_jar/dublue_pareto_set_of_pareto.pickle", "rb") as fp:
                 lis_of_dublue = pickle.load(fp)
-                W_mat = lis_of_dublue[index]
+                W_mat = lis_of_dublue[int(index)]
 
 
             # rest_set = np.concatenate((rest_set[0], np.transpose(np.dot(W_mat, np.transpose(trest_set[0]))))), np.concatenate((rest_set[1], trest_set[1]))
