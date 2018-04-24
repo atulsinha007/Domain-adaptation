@@ -299,7 +299,7 @@ def test_it_with_bp(play=1, NGEN=60, MU=4 * 15, play_with_whole_pareto=0, post_s
 
 	print("\ntest: test on one with min validation error",
 		  network_obj_src.test_err(min(pop, key=lambda x: x.fitness.values[1])))
-	tup = network_obj_src.test_on_pareto_patch_correctone(pareto_front)
+	tup = network_obj_src.test_on_pareto_patch_correctone_weighted(pareto_front)
 
 	print("\n test: avg on sampled pareto set", tup)
 
@@ -311,7 +311,7 @@ if __name__ == "__main__":
 	logf = open("log_error_main.txt", "a")
 	try:
 		post_st = sys.argv[1]
-		test_it_with_bp(play=1, NGEN=100, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
+		test_it_with_bp(play=1, NGEN=200, MU=4 * 25, play_with_whole_pareto=1, post_st = post_st)
 	except Exception as e:
 		print("Error! Error! Error!")
 		logf.write('\n\n')

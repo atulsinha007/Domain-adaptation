@@ -5,6 +5,7 @@ import tensorflow as tf
 import time
 import gene
 import matenc
+from scipy import stats
 import chromosome
 import dataset2_dataf
 from chromosome import *
@@ -32,6 +33,18 @@ def priortize_connections(conn_lis):
         tup=concsn.get_couple()
         dict[tup[0].nature+tup[1].nature].append(concsn)
     return dict['IH1']+['breakH1']+dict['H1H2']+dict['IH2']+['breakH2']+dict['H2O']+dict['H1O']+dict['IO']
+
+def minimize_src(individual):
+    outputarr = network_obj_src.feedforward_ne(individual, final_activation=network.softmax)
+    outputarr_tar = network_obj_src.feedforward_ne_for_tar(individual, final_activation=network.softmax)
+    neg_log_likelihood_val = give_neg_log_likelihood(outputarr, network_obj_src.resty)
+    # mean_square_error_val = give_mse(outputarr, network_obj_src.resty)
+    neg_log_likelihood_val_tar = give_neg_log_likelihood(outputarr_tar, network_obj_src.tar_transformed_resty)
+    # anyways not using these as you can see in 'creator.create("FitnessMin", base.Fitness, weights=(-1.0, -1.0, 0.0, 0.0))'
+    # return neg_log_likelihood_val, mean_square_error_val, false_positve_rat, false_negative_rat
+    return (neg_log_likelihood_val, neg_log_likelihood_val_tar, len(individual.conn_arr))
+
+
 class Neterr:
     def __init__(self, inputdim, outputdim,   hidden_unit_lim , change_to_target , rng = random):# HYPERPARAMETER hid_unit_lim
         self.inputdim = inputdim
@@ -293,12 +306,12 @@ class Neterr:
             for chromo in pareto_set:
 
                 arr = self.feedforward_ne(chromo)
-                print(arr.shape)
+                #print(arr.shape)
                 assert (arr.shape[0] == 1)
                 lis.append(list(arr.reshape((arr.shape[1], ))))
             output_of_all_nn_on_one_data_point = np.array(lis)
             activated_output_of_all_nn_on_one_data_point = softmax(output_of_all_nn_on_one_data_point)
-            avrg = np.mean( activated_output_of_all_nn_on_one_data_point, axis = 0)
+            avrg = np.mean( activated_output_of_all_nn_on_one_data_point)
             argmax_at_avg = avrg.argmax()
             grand_lis.append(argmax_at_avg)
         grand_lis_arr = np.array(grand_lis)
@@ -318,11 +331,60 @@ class Neterr:
 
         to_find_mean_arr = np.where( difference != 0, 1, 0 )
         self.inputarr = temp
-        return np.mean(to_find_mean_arr) 
+        return np.mean(to_find_mean_arr)
 
+    def test_on_pareto_patch_correctone_weighted(self, pareto_set, log_correct = None):
+        temp = self.inputarr
+        lis_of_fitness = [ (item.fitness.values[0], item.fitness.values[1]) for item in pareto_set ]
+        temper = copy.deepcopy(self.testx)
+        grand_lis  = []
+        for row in temper:
+            row_matrix = row.reshape((1, row.shape[0]))
+            lis = []
+            self.inputarr = row_matrix
+            for chromo in pareto_set:
 
+                arr = self.feedforward_ne(chromo)
+                print(arr.shape)
+                assert (arr.shape[0] == 1)
+                lis.append(list(arr.reshape((arr.shape[1], ))))
+            output_of_all_nn_on_one_data_point = np.array(lis)
+            activated_output_of_all_nn_on_one_data_point = softmax(output_of_all_nn_on_one_data_point)
+            vote = weighted_mean( activated_output_of_all_nn_on_one_data_point, lis_of_fitness)
 
+            grand_lis.append(vote)
+        grand_lis_arr = np.array(grand_lis)
+        assert (grand_lis_arr.shape == self.testy.shape)
+        if log_correct is not None:
+            st = '\n\n'
+            for i in range( self.testy.shape[0]):
+                if self.testy[i] - grand_lis_arr[i] == 0:
+                    print("correct ", self.testy[i])
+                    st += "correct " + str(self.testy[i])+'\n'
+            st+='\n'
+            file_ob = open("./log_folder/log_correct.txt", "a")
+            file_ob.write(st)
+            file_ob.close()
 
+        difference = self.testy - grand_lis_arr
+
+        to_find_mean_arr = np.where( difference != 0, 1, 0 )
+        self.inputarr = temp
+        return np.mean(to_find_mean_arr)
+
+def weighted_mean(hot_vector, lis_of_fitness):
+
+    weights = np.array([1 / (item[1]) for item in lis_of_fitness])
+    overall_sum = np.sum(weights)
+    hot_vector = np.array([ hot_vector[i]*weights[i]/overall_sum for i in range(weights.shape[0]) ])
+
+    lis_of_votes = np.array([ item.argmax() for item in hot_vector])
+
+    #assert (lis_of_fitness.shape[1] == None)
+    #final_votes = lis_of_votes*weights
+
+    class_name = stats.mode(lis_of_votes).mode[0]
+    return class_name
 
 
 
