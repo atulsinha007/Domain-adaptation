@@ -345,7 +345,7 @@ class Neterr:
             for chromo in pareto_set:
 
                 arr = self.feedforward_ne(chromo)
-                print(arr.shape)
+                #print(arr.shape)
                 assert (arr.shape[0] == 1)
                 lis.append(list(arr.reshape((arr.shape[1], ))))
             output_of_all_nn_on_one_data_point = np.array(lis)
@@ -374,7 +374,7 @@ class Neterr:
 
 def weighted_mean(hot_vector, lis_of_fitness):
 
-    weights = np.array([1 / (item[1]) for item in lis_of_fitness])
+    weights = np.array([-np.log(item[1]) for item in lis_of_fitness])
     overall_sum = np.sum(weights)
     hot_vector = np.array([ hot_vector[i]*weights[i]/overall_sum for i in range(weights.shape[0]) ])
 
