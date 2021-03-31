@@ -30,7 +30,7 @@ Jinja2==2.10
 Keras==2.1.5
 lark==0.0.4
 lark-parser==0.5.5
-lxml==3.5.0
+lxml==4.6.3
 Markdown==2.6.10
 MarkupSafe==1.0
 matplotlib==2.1.1
