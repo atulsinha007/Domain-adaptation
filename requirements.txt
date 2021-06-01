@@ -94,6 +94,6 @@ unity-scope-virtualbox==0.1
 unity-scope-yelp==0.1
 unity-scope-zotero==0.1
 unity-tweak-tool==0.0.7
-urllib3==1.13.1
+urllib3==1.26.5
 Werkzeug==0.12.2
 xlrd==1.1.0
