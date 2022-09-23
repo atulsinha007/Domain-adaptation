@@ -43,7 +43,7 @@ oauthlib==1.0.3
 opencv-python==3.4.0.12
 pandas==0.22.0
 Pillow==5.0.0
-protobuf==3.4.0
+protobuf==3.18.3
 pyasn1==0.1.9
 pycparser==2.18
 pycups==1.9.73
