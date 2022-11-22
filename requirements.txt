@@ -42,7 +42,7 @@ numpy==1.13.1
 oauthlib==1.0.3
 opencv-python==3.4.0.12
 pandas==0.22.0
-Pillow==5.0.0
+Pillow==9.3.0
 protobuf==3.4.0
 pyasn1==0.1.9
 pycparser==2.18
